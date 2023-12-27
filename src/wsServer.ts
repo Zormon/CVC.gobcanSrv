@@ -1,27 +1,22 @@
-import type { TurnCall } from './types'
-import { Color } from './types'
 import type { Server } from 'http'
 import { EventEmitter } from 'events'
-import WebSocket from 'ws'
+import { WebSocketServer } from 'ws'
 
-export class WebSocketServer extends EventEmitter {
+export class WsServer extends EventEmitter {
     private httpServer:Server
-    private wsServer:WebSocket.Server
+    private wsServer:WebSocketServer
 
     constructor(server:Server) {
         super()
         this.httpServer = server
-        this.wsServer = new WebSocket.Server( {server:this.httpServer} );
+        this.wsServer = new WebSocketServer( {server:this.httpServer} );
+    }
 
-        this.wsServer.on('connection', (ws: WebSocket) => {
-            ws.on('message', (message: string) => {
-                try {
-                    const data = JSON.parse(message)
-                    this.emit('message', data)
-                } catch (error) {
-                    console.error('Failed to parse WebSocket message:', error)
-                }
-            })
+    public broadcast(data: Object) {
+        this.wsServer.clients.forEach((client) => {
+            if (client.readyState === 1) {
+                client.send(JSON.stringify(data))
+            }
         })
     }
 }

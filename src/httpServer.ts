@@ -57,26 +57,25 @@ export class HttpServer extends EventEmitter {
                 res.write(JSON.stringify(params))
                 res.end()
 
-                // Emit the "turn" event with the data
                 this.emit('turn', params)
-                break
+            break
 
-                default:
-                    const filename = `./static/` + new URL(req?.url ?? '', `http://${req.headers.host}`).pathname
-                    
-                    if ( existsSync(filename) ) {
-                        let headers:OutgoingHttpHeaders = {}
-                        headers['Content-Type'] = getContentType(filename)
-        
-                        readFile(filename, 'binary', (err, file)=> {
-                            res.writeHead(200, headers)
-                            res.write( file, 'binary' )
-                            res.end()
-                        })
-                    } else {
-                        res.writeHead( 404, {'Content-Type': 'text/plain'} ).end()
-                    }
-                break;
+            default:
+                const filename = `./static/` + new URL(req?.url ?? '', `http://${req.headers.host}`).pathname
+                
+                if ( existsSync(filename) ) {
+                    let headers:OutgoingHttpHeaders = {}
+                    headers['Content-Type'] = getContentType(filename)
+    
+                    readFile(filename, 'binary', (err, file)=> {
+                        res.writeHead(200, headers)
+                        res.write( file, 'binary' )
+                        res.end()
+                    })
+                } else {
+                    res.writeHead( 404, {'Content-Type': 'text/plain'} ).end()
+                }
+            break;
         }
     })
     
