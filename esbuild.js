@@ -6,7 +6,7 @@ const options = {
   bundle: true,
   packages: 'external',
   platform: 'node',
-  format: 'esm',
+  format: 'cjs',
   plugins: [],
 }
 

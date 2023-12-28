@@ -7,5 +7,8 @@ const wsSrv = new WsServer(httpSrv.getServer())
 
 httpSrv.start()
 httpSrv.on('turn', (data:TurnCall) => {
-    wsSrv.broadcast(data)
+    wsSrv.broadcast({accion:'turn', data})
 })
+
+
+setInterval(()=>{ wsSrv.broadcast({accion:'ping'}) }, 4000)

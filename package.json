@@ -3,6 +3,13 @@
   "productName": "gobcansrv",
   "version": "1.0.0",
   "description": "Microservidor para turnos",
+  "bin": "dist/index.js",
+  "main": "dist/index.js",
+  "pkg": {
+    "targets": [
+      "node18-linux-x64"
+    ]
+  },
   "scripts": {
     "clean": "rimraf dist",
     "dev:tsc": "tsc --watch --preserveWatchOutput",
