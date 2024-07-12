@@ -8,7 +8,6 @@ import { EventEmitter } from 'events'
 export class HttpServer extends EventEmitter {
     private port: number = 80
     private server = createServer((req: IncomingMessage, res: ServerResponse) => {
-        console.log('req' + req.url)
         if (!req.url) { return }
 
         const url = new URL(req.url, `http://${req.headers.host}`)
@@ -92,7 +91,6 @@ export class HttpServer extends EventEmitter {
 
     public start() {
         this.server.listen(this.port)
-        console.log(`Server running at http://localhost:${this.port}/`)
     }
 
     public stop() {
